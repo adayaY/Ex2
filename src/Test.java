@@ -192,11 +192,59 @@ class Test {
     }
 
     // test Ex2Sheet
+    @org.junit.jupiter.api.Test
+    void BasicCellValues() {
+        Ex2Sheet sheet = new Ex2Sheet(3, 3);
+
+        sheet.set(0, 0, "123");
+        sheet.set(1, 1, "456");
+        sheet.set(2, 2, "Hello");
+
+        // Vérification des valeurs
+        assertEquals("123", sheet.value(0, 0));
+        assertEquals("456", sheet.value(1, 1));
+        assertEquals("Hello", sheet.value(2, 2));
+    }
+
+    @org.junit.jupiter.api.Test
+    void Formulas() {
+        Ex2Sheet sheet = new Ex2Sheet(3, 3);
+
+        sheet.set(0, 1, "=123+456");
+        assertEquals("579.0", sheet.value(0, 1));
 
 
+        sheet.set(0, 0, "5");
+        sheet.set(1, 0, "7");
+        sheet.set(1, 2, "=A0+B0");
+        assertEquals("12.0", sheet.value(1, 2));
+    }
+
+    @org.junit.jupiter.api.Test
+    void DepthCalculation() {
+        Ex2Sheet sheet = new Ex2Sheet(3, 3);
 
 
+        sheet.set(0, 0, "5");
+        sheet.set(1, 0, "=A0+1");
+        sheet.set(2, 0, "=B0+2");
 
+        int[][] depth = sheet.depth();
+        assertEquals(0, depth[0][0]);
+        assertEquals(1, depth[1][0]);
+        assertEquals(2, depth[2][0]);
+    }
+
+    @org.junit.jupiter.api.Test
+    void SaveAndLoad() throws Exception {
+        Ex2Sheet sheet = new Ex2Sheet(3, 3);
+
+
+        sheet.set(0, 0, "123");
+        sheet.set(1, 1, "=A0*2");
+        sheet.set(2, 2, "Hello");
+        sheet.save("test.csv");
+    }
 
     @org.junit.jupiter.api.Test
     void max() {
@@ -208,32 +256,15 @@ class Test {
         int result1 = Ex2Sheet.max(matrix1);
         assertEquals(9, result1); // הערך המקסימלי במטריצה הוא 9
 
-    int[][] matrix2 = {
-            {-1, -2, -3},
-            {-4, -5, -6},
-            {-7, -8, -9}
-    };
-    int result2 = Ex2Sheet.max(matrix2);
-    assertEquals(-1, result2); // הערך המקסימלי במטריצה הוא -1
+        int[][] matrix2 = {
+                {-1, -2, -3},
+                {-4, -5, -6},
+                {-7, -8, -9}
+        };
+        int result2 = Ex2Sheet.max(matrix2);
+        assertEquals(-1, result2); // הערך המקסימלי במטריצה הוא -1
 }
-
-    void whatTheForm(){
-
     }
-    void whatTheDepth(){
-
-    }
-
-    @org.junit.jupiter.api.Test
-    void  whatTheCell() {
-    }
-
-
-
-    }
-
-
-
 
 
 
